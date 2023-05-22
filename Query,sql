@@ -19,57 +19,44 @@ join team as team_two on game_teams.team_two_id = team_two.id
 join team as home_team on game_teams.home_team = home_team.id
 ;
 
-###Creates views for any indivdual stats
-## Create a view that shows the players minutes played
-#select player.first_name || ' ' || player.last_name as name, minutes_played as MP from player_game_MP
-#join player on player_id = player.id
+
+update game_id_scoreboard
+set field_goals_made = random() * field_goals_attempted
+;
+update game_id_scoreboard
+set three_pointers_made = random() * field_goals_made
+;
+update game_id_scoreboard
+set three_pointers_attempted = random()*(field_goals_made-three_pointers_made)+three_pointers_made;
+
+update game_id_scoreboard
+set free_throws_made = random()* free_throws_attempted;
+
+select game_id as Game, player.first_name || ' ' || player.last_name as name, 
+
+minutes_played as MP, 
+field_goals_made as FGM, 
+field_goals_attempted as FGA, 
+round(CAST(field_goals_made AS float) / CAST(field_goals_attempted AS float)*100) as FGP,
+three_pointers_made as TPM,
+three_pointers_attempted as TPA,
+round(CAST(three_pointers_made AS float) / CAST(three_pointers_attempted AS float)*100) as TGP,
+free_throws_made as FTM,
+free_throws_attempted as FTA,
+round(CAST(free_throws_made AS float) / CAST(free_throws_attempted AS float)*100) as FTP,
+three_pointers_made*3 + (field_goals_made-three_pointers_made)*2 + free_throws_made as Points,
+offensive_rebounds as ORB,
+defensive_rebounds as DRB,
+offensive_rebounds + defensive_rebounds as TRB,
+assists as AST,
+steals as STL,
+blocks as BLK,
+turnovers as TOV,
+personal_fouls as PF
+from game_id_scoreboard
+join player on player_id = player.id
+
 ;
 
-## Create a view that shows the players FG
-#select player.first_name || ' ' || player.last_name as name, field_goals_made as FGM, field_goals_attempted as FGA, round(CAST(field_goals_made AS float) / CAST(field_goals_attempted AS float)*100)  as FGP from player_game_FG
-#join player on player_id = player.id
-;
 
-## Create a view that shows the players 3P
-#select player.first_name || ' ' || player.last_name as name, three_point as Three_Point, three_point_attempted as Three_Point_attempted,  round(CAST(three_point AS float) / CAST(three_point_attempted AS float)*100) as TPP from player_game_3P
-#join player on player_id = player.id
-;
 
-## Create a view that shows the players FT
-#select player.first_name || ' ' || player.last_name as name, free_throws_made as FTM, free_throws_attempted as FTA,round(CAST(free_throws_made AS float) / CAST(free_throws_attempted AS float)*100) as FTP from player_game_FT
-#join player on player_id = player.id
-;
-
-## Create a view that shows the players RB
-#select player.first_name || ' ' || player.last_name as name, offensive_rebound as ORB, defensive_rebound as DRB,offensive_rebound+defensive_rebound as TRB from player_game_RB
-#join player on player_id = player.id
-;
-
-## Create a view that shows the players AST
-#select player.first_name || ' ' || player.last_name as names, assists from player_game_AST
-#join player on player_id = player.id
-;
-
-## Create a view that shows the players STL
-#select player.first_name || ' ' || player.last_name as name, steals from player_game_STL
-#join player on player_id = player.id
-;
-
-## Create a view that shows the players BLK
-#select player.first_name || ' ' || player.last_name as name, blocks from player_game_BLK
-#join player on player_id = player.id
-;
-
-## Create a view that shows the players TOV
-#select player.first_name || ' ' || player.last_name as name, turnovers from player_game_TOV
-#join player on player_id = player.id
-;
-
-## Create a view that shows the players PF
-#select player.first_name || ' ' || player.last_name as name, personal_fouls from player_game_PF
-#join player on player_id = player.id
-;
-
-select game_teams.id, team_one.name, team_two.name from game_teams
-join team as team_one on game_teams.team_one_id = team_one.id
-join team as team_two on game_teams.team_two_id = team_two.id
