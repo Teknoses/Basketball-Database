@@ -1,8 +1,10 @@
-### Create a view that can see the player_team_position as their actual name, team, and position and not just the id
-#select player.first_name || ' ' || player.last_name as name, team.name as team, roles.role as role from player_team_role
-#join player on player_id = player.id
-#join team on team_id = team.id
-#join roles on role_id = roles.id 
+### See all players and their role on each team
+select player.first_name || ' ' || player.last_name as name, team.name as team, roles.role as role from player_team_role
+join player on player_id = player.id
+join team on team_id = team.id
+join roles on role_id = roles.id 
+order by team desc
+;
 
 select game_date.day || '-' || game_date.month || '-' || game_date.year as Date,
 game_type.type as Game_Type,
@@ -10,7 +12,6 @@ team_one.name as team_one,
 team_two.name as team_two,
 home_team.name as home_team
 from game_status
-
 join game_date on date_id = game_date.id
 join game_type on game_type_id = game_type.id
 join game_teams on teams_id = game_teams.id
@@ -30,10 +31,12 @@ update game_id_scoreboard
 set three_pointers_attempted = random()*(field_goals_made-three_pointers_made)+three_pointers_made;
 
 update game_id_scoreboard
-set free_throws_made = random()* free_throws_attempted;
+set free_throws_made = random()* free_throws_attempted
+;
 
-select game_id as Game, player.first_name || ' ' || player.last_name as name, 
-
+select game_id as Game, 
+player.first_name || ' ' || player.last_name as name, 
+team.name as team,
 minutes_played as MP, 
 field_goals_made as FGM, 
 field_goals_attempted as FGA, 
@@ -55,8 +58,8 @@ turnovers as TOV,
 personal_fouls as PF
 from game_id_scoreboard
 join player on player_id = player.id
-
+join team on team_id = team.id
+order by team_id asc
 ;
-
 
 
