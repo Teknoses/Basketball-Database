@@ -6,7 +6,7 @@ create table player(
   );
   
   insert into player (first_name,last_name) values
-  ('Kawhi', 'Leonard'), ('Michael', 'Jordan'), ('Lebron', 'James'), ('Shaquille', 'O''Neal'),('Jeremy','Lin')
+  ('Kawhi', 'Leonard'), ('Michael', 'Jordan'), ('Lebron', 'James'), ('Shaquille', 'O''Neal'),('Jeremy','Lin'), ('Giannis','Antetokounmpo'),('Stephen','Curry'),('Luka','Doncic'),('Kevin','Durant'),('Kobe','Bryant')
   ;
   
   create table roles(
@@ -26,7 +26,7 @@ create table player(
     );
     
    insert into team(name) values
-   ('Toronto Raptors'), ('Los Angeles Clippers'), ('Los Angeles Lakers')
+   ('Toronto Raptors'), ('Los Angeles Lakers'), ('Los Angeles Clippers')
    ;
     
   create table player_team_role(
@@ -40,7 +40,7 @@ create table player(
   );
   
   insert into player_team_role(player_id,team_id, role_id) values
-  (1,1,1),(2,2,3),(3,1,4),(4,2,5),(5,1,5)
+  (1,1,4),(2,2,4),(3,1,4),(4,2,5),(5,1,5),(6,2,3),(7,1,1),(8,2,1),(9,1,3),(10,2,2)
   ;
 
 create table game_type(
@@ -77,7 +77,7 @@ create table game_teams(
   );
  
 insert into game_teams(team_one_id , team_two_id, home_team) values
-	(3,2,2)
+	(1,2,2)
 	;
  
 create table game_status(
@@ -89,6 +89,7 @@ create table game_status(
   constraint fk_game_type_id foreign key(game_type_id) references game_type(id),
   teams_id integer,
   constraint fk_teams_id foreign key(teams_id) references game_teams(id)
+ 
   );
   
  insert into game_status(id, date_id, game_type_id, teams_id) values
@@ -96,6 +97,8 @@ create table game_status(
     ; 
 
 create table game_id_scoreboard(
+  id serial,
+  primary key(id),
   game_id integer,
   player_id integer,
   team_id integer,
@@ -120,6 +123,7 @@ create table game_id_scoreboard(
   
 insert into game_id_scoreboard(player_id, 
                             game_id,
+                            team_id,
                             minutes_played,
                             field_goals_attempted,
                             field_goals_made,
@@ -134,12 +138,16 @@ insert into game_id_scoreboard(player_id,
                             blocks, 
                             turnovers, 
                             personal_fouls) values
-(1,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
-(2,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
-(3,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
-(4,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
-(5,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6)
+(1,1,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(2,1,2, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(3,1,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(4,1,2, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(5,1,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(6,1,2, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(7,1,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(8,1,2, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(9,1,1, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6),
+(10,1,2, random() * 48, random() * 100, 1, 1 , 1, 1, random() * 100 ,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100,  random() * 100, random() * 6)
 ;
-
 
 
